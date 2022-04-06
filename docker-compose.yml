@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  carbone:
+    build: carbone-docker
+    # restart: unless-stopped
+    environment:
+      - DEBUG=carbone:*
+    volumes:
+      - ./templates:/home/node/carbone-api/templates:ro
+      - ./carbone-docker/index.js:/home/node/carbone-api/index.js
+
+  api:
+    build: api
+    # restart: unless-stopped
+    environment:
+      - CONFIG=/data/config.yaml
+    volumes:
+      - ./config.yaml:/data/config.yaml
+      - ./api:/srv/app
+    depends_on:
+      - carbone
+    ports:
+      - "4567:4567"
+
+volumes:
+  cache:

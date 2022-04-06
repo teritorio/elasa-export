@@ -1,0 +1,9 @@
+source 'https://rubygems.org'
+
+gem 'accept_language'
+gem 'deep_merge'
+gem 'httparty'
+gem 'mime-types'
+gem 'sinatra'
+gem 'thin'
+gem 'webcache'
