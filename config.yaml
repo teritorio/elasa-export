@@ -1,17 +1,22 @@
 services:
   __default__:
+    services:
+      qr_shortener_url: http://qr_shortener:8635
     templates:
       favorites:
         path: favorites-default.odt
         images:
           - zipPath: 'Pictures/100000000000012C000000C8301A8B8F6814976E.png'
             property: [settings, themes, 0, logo_url]
-          # - zipPath: 'Pictures/10001E83000014C6000014C6A9CA85DB240426D5.svg'
-          #   property: []
+          - zipPath: 'Pictures/10001E83000014C6000014C6A9CA85DB240426D5.svg'
+            property: [globals, favorites_qrcode_url]
 
   cdt40:
     key: cdt40
     api_url: https://cdt40.carto.guide/api.teritorio/geodata/v0.1/cdt40/tourism/
+    templates:
+      favorites:
+        qrcode_callback_url: https://cdt40.carto.guide/?fav=
 
 config:
   langs: [en, fr, es]

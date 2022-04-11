@@ -4,6 +4,7 @@ require 'httparty'
 
 class Favorites
   def self.get_pdf(config, ids, lang, cache, carbone_url)
+    config_fav = config['templates']['favorites']
     api_url = config['api_url']
     favorites = api_favorites(cache, "#{api_url}pois?ids=#{ids}&as_point=true&short_description=true")
 
@@ -23,9 +24,21 @@ class Favorites
       }
     end
 
+    qr_shortener_url = config['services']['qr_shortener_url']
+    url_to_encode = config_fav['qrcode_callback_url'] + ids
+    shortener_url = "#{qr_shortener_url}/shorten/#{url_to_encode}"
+    short_url = cache.get(shortener_url).content
+    favorites_qrcode_url = "#{qr_shortener_url}/qrcode.svg/#{url_to_encode}"
+
+    globals = {
+      'favorites_short_url' => short_url,
+      'favorites_qrcode_url' => favorites_qrcode_url,
+    }
+
     data = {
       'settings' => api_settings(cache, config['api_url']),
       'favorites' => favorites,
+      'globals' => globals,
     }
 
     body = {
@@ -34,24 +47,25 @@ class Favorites
         convertTo: 'pdf',
         lang: lang,
       },
-      images: config['templates']['favorites']['images'].collect{ |image|
-        prepare_image(data, image, cache)
+      images: config_fav['images'].collect{ |image|
+        image_url = data.dig(*image['property'])
+        prepare_image(image, get_image(cache, image_url))
       },
     }
 
-    path = config['templates']['favorites']['path']
+    path = config_fav['path']
     url = "#{carbone_url}/render/#{path}"
     r = HTTParty.post(url, body: body.to_json, headers: { 'Content-Type' => 'application/json' })
     r.body if r.code == 200
   end
 
-  def self.prepare_image(data, config, cache)
-    image_url = data.dig(*config['property'])
+  def self.prepare_image(config, image_data)
+    mime_type = MIME::Types.type_for(config['zipPath'].split('.')[-1])
     {
       path: config['zipPath'],
       content: encode_image(
-        image_url.split('.')[-1],
-        get_image(cache, image_url),
+        mime_type,
+        image_data,
       ),
     }
   end
@@ -68,8 +82,7 @@ class Favorites
     cache.get(url).content
   end
 
-  def self.encode_image(ext, data)
-    mime_type = MIME::Types.type_for(ext)
+  def self.encode_image(mime_type, data)
     "data:#{mime_type};base64,#{Base64.encode64(data)}"
   end
 end
