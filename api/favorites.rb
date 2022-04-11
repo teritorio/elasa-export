@@ -35,10 +35,7 @@ class Favorites
         lang: lang,
       },
       images: config['templates']['favorites']['images'].collect{ |image|
-        {
-          path: image['zipPath'],
-          content: encode_image(cache, data.dig(*image['property']))
-        }
+        prepare_image(data, image, cache)
       },
     }
 
@@ -46,6 +43,17 @@ class Favorites
     url = "#{carbone_url}/render/#{path}"
     r = HTTParty.post(url, body: body.to_json, headers: { 'Content-Type' => 'application/json' })
     r.body if r.code == 200
+  end
+
+  def self.prepare_image(data, config, cache)
+    image_url = data.dig(*config['property'])
+    {
+      path: config['zipPath'],
+      content: encode_image(
+        image_url.split('.')[-1],
+        get_image(cache, image_url),
+      ),
+    }
   end
 
   def self.api_settings(cache, url)
@@ -56,13 +64,12 @@ class Favorites
     JSON.parse(cache.get(url).content)
   end
 
-  def self.image(cache, url)
+  def self.get_image(cache, url)
     cache.get(url).content
   end
 
-  def self.encode_image(cache, image_url)
-    ext = image_url.split('.')[-1]
+  def self.encode_image(ext, data)
     mime_type = MIME::Types.type_for(ext)
-    "data:#{mime_type};base64,#{Base64.encode64(image(cache, image_url))}"
+    "data:#{mime_type};base64,#{Base64.encode64(data)}"
   end
 end

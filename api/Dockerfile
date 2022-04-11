@@ -8,7 +8,7 @@ ADD Gemfile .
 RUN bundle config --global silence_root_warning 1
 RUN bundle install
 
-ADD *.rb .
+ADD *.rb ./
 
 EXPOSE 4567
 VOLUME /data/config.yaml

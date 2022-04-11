@@ -15,3 +15,10 @@ Render PDF from template using Elasa API data.
 # Templates
 
 How to make template: https://carbone.io/documentation.html#building-a-template
+
+## Docker
+
+```
+docker-compose build
+docker-compose up -d
+```

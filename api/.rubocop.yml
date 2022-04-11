@@ -42,3 +42,6 @@ Layout/IndentationWidth:
 
 Layout/EndAlignment:
   Enabled: false
+
+Style/TrailingCommaInArguments:
+  Enabled: false
