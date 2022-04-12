@@ -1,7 +1,8 @@
 {
     "title": "My favorites",
+    "onCellphone": "Find the favorites on your cell phone",
     "name": "Name",
-    "phone": "Telephone",
+    "phone": "Phone",
     "address": "Address",
     "website": "Website",
     "category": "Category"
