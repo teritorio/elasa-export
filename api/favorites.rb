@@ -1,5 +1,6 @@
 require 'mime-types'
 require 'base64'
+require 'cgi'
 require 'httparty'
 
 class Favorites
@@ -25,13 +26,12 @@ class Favorites
     end
 
     qr_shortener_url = config['services']['qr_shortener_url']
-    url_to_encode = config_fav['qrcode_callback_url'] + ids
-    shortener_url = "#{qr_shortener_url}/shorten/#{url_to_encode}"
-    short_url = cache.get(shortener_url).content
-    favorites_qrcode_url = "#{qr_shortener_url}/qrcode.svg/#{url_to_encode}"
+    url_to_encode = CGI.escape(config_fav['qrcode_callback_url'] + ids)
+    shortener_url = "#{qr_shortener_url}/shorten?url=#{url_to_encode}"
+    favorites_qrcode_url = "#{qr_shortener_url}/qrcode.svg?url=#{url_to_encode}"
 
     globals = {
-      'favorites_short_url' => short_url,
+      'favorites_short_url' => cache.get(shortener_url).content,
       'favorites_qrcode_url' => favorites_qrcode_url,
     }
 
