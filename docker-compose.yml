@@ -16,6 +16,7 @@ services:
     environment:
       - CONFIG=/data/config.yaml
     volumes:
+      # - RACK_ENV=production
       - ./config.yaml:/data/config.yaml
       - ./api:/srv/app
     depends_on:
