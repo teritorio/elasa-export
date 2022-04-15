@@ -12,11 +12,11 @@ services:
             property: [globals, favorites_qrcode_url]
 
   cdt40:
-    key: cdt40
-    api_url: https://cdt40.carto.guide/api.teritorio/geodata/v0.1/cdt40/tourism/
-    templates:
-      favorites:
-        qrcode_callback_url: https://cdt40.carto.guide/?fav=
+    tourism:
+      api_url: https://cdt40.carto.guide/api.teritorio/geodata/v0.1
+      templates:
+        favorites:
+          qrcode_callback_url: https://cdt40.carto.guide/?a=a#fav=
 
 config:
   langs: [en, fr, es]

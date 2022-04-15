@@ -4,10 +4,10 @@ require 'cgi'
 require 'httparty'
 
 class Favorites
-  def self.get_pdf(config, ids, lang, cache, carbone_url)
+  def self.get_pdf(config, project, theme, ids, lang, cache, carbone_url)
     config_fav = config['templates']['favorites']
     api_url = config['api_url']
-    favorites = api_favorites(cache, "#{api_url}pois?ids=#{ids}&as_point=true&short_description=true")
+    favorites = api_favorites(cache, "#{api_url}/#{project}/#{theme}/pois?ids=#{ids}&as_point=true&short_description=true")
 
     favorites = if favorites
       favorites['features'].collect{ |feature|
@@ -36,7 +36,7 @@ class Favorites
     }
 
     data = {
-      'settings' => api_settings(cache, config['api_url']),
+      'settings' => api_settings(cache, "#{config['api_url']}/#{project}/#{theme}/"),
       'favorites' => favorites,
       'globals' => globals,
     }
@@ -49,8 +49,8 @@ class Favorites
       },
       images: config_fav['images'].collect{ |image|
         image_url = data.dig(*image['property'])
-        prepare_image(image, get_image(cache, image_url))
-      },
+        prepare_image(image, get_image(cache, image_url)) if image_url
+      }.compact,
     }
 
     path = config_fav['path']
