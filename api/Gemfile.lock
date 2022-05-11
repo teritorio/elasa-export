@@ -33,7 +33,7 @@ GEM
     multi_xml (0.6.0)
     mustermann (1.1.1)
       ruby2_keywords (~> 0.0.1)
-    public_suffix (4.0.6)
+    public_suffix (4.0.7)
     rack (2.2.3)
     rack-protection (2.2.0)
       rack
@@ -68,4 +68,4 @@ DEPENDENCIES
   webcache
 
 BUNDLED WITH
-   2.3.3
+   2.3.10
