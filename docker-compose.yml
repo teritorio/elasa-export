@@ -15,8 +15,8 @@ services:
     # restart: unless-stopped
     environment:
       - CONFIG=/data/config.yaml
-    volumes:
       # - RACK_ENV=production
+    volumes:
       - ./config.yaml:/data/config.yaml
       - ./api:/srv/app
     depends_on:
