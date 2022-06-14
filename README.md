@@ -1,4 +1,4 @@
-# Elasa Print
+# Elasa Export
 
 Render PDF from template using Elasa API data.
 
