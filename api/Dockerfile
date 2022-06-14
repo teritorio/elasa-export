@@ -4,7 +4,7 @@ RUN apk add --no-cache --virtual build-dependencies build-base ruby-dev ruby-jso
 
 WORKDIR /srv/app
 
-ADD Gemfile .
+ADD Gemfile Gemfile.lock ./
 RUN bundle config --global silence_root_warning 1
 RUN bundle install
 
