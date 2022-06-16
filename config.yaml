@@ -6,7 +6,7 @@ services:
       favorites:
         path: favorites-default.odt
         images:
-          - zipPath: 'Pictures/100000000000012C000000C8301A8B8F6814976E.png'
+          - zipPath: 'Pictures/1001AF2C00001B58000013884478CBA59A4FBD23.svg'
             property: [settings, themes, 0, logo_url]
           - zipPath: 'Pictures/10001E83000014C6000014C6A9CA85DB240426D5.svg'
             property: [globals, favorites_qrcode_url]
