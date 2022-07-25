@@ -7,7 +7,7 @@ class Favorites
   def self.get_pdf(config, project, theme, ids, lang, cache, carbone_url)
     config_fav = config['templates']['favorites']
     api_url = config['api_url']
-    favorites = api_favorites(cache, "#{api_url}/#{project}/#{theme}/pois?ids=#{ids}&as_point=true&short_description=true")
+    favorites = api_favorites(cache, "#{api_url}/#{project}/#{theme}/pois.geojson?ids=#{ids}&as_point=true&short_description=true")
 
     favorites = if favorites
       favorites['features'].collect{ |feature|
@@ -36,7 +36,7 @@ class Favorites
     }
 
     data = {
-      'settings' => api_settings(cache, "#{config['api_url']}/#{project}/#{theme}/"),
+      'settings' => api_settings(cache, "#{config['api_url']}/#{project}/#{theme}/settings.json"),
       'favorites' => favorites,
       'globals' => globals,
     }
