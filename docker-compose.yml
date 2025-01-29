@@ -9,6 +9,7 @@ services:
     volumes:
       - ./templates:/home/node/carbone-api/templates:ro
       - ./carbone-docker/index.js:/home/node/carbone-api/index.js
+      - ./carbone-docker/images.js:/home/node/carbone-api/images.js
     restart: unless-stopped
 
   api:
