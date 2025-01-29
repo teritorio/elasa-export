@@ -3,16 +3,17 @@ version: '3'
 services:
   carbone:
     build: carbone-docker
-    # restart: unless-stopped
+    image: ghcr.io/teritorio/elasa-export-carbone:master
     environment:
       - DEBUG=carbone:*
     volumes:
       - ./templates:/home/node/carbone-api/templates:ro
       - ./carbone-docker/index.js:/home/node/carbone-api/index.js
+    restart: unless-stopped
 
   api:
     build: api
-    # restart: unless-stopped
+    image: ghcr.io/teritorio/elasa-export-api:master
     environment:
       - CONFIG=/data/config.yaml
       # - RACK_ENV=production
@@ -23,6 +24,7 @@ services:
       - carbone
     ports:
       - "4567:4567"
+    restart: unless-stopped
 
 volumes:
   cache:
