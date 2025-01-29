@@ -11,12 +11,21 @@ services:
           - zipPath: 'Pictures/10001E83000014C6000014C6A9CA85DB240426D5.svg'
             property: [globals, favorites_qrcode_url]
 
-  cdt40:
+  dev:
     tourism:
-      api_url: https://cdt40.carto.guide/api.teritorio/geodata/v0.1
+      api_url: https://dev.appcarto.teritorio.xyz/content/api.teritorio/geodata/v0.1
       templates:
         favorites:
-          qrcode_callback_url: https://cdt40.carto.guide/?a=a#fav=
+          qrcode_callback_url: https://dev.appcarto.teritorio.xyz/?a=a#fav=
+
+  test:
+    tourism:
+      api_url: https://dev.appcarto.teritorio.xyz/content/api.teritorio/geodata/v0.1
+      templates:
+        favorites:
+          path: favorites-test.odt
+          qrcode_callback_url: https://vido.teritorio.xyz/#mode=favorites&favs=
+
 
 config:
   langs: [en, fr, es]
