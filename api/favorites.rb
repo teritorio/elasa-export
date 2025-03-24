@@ -21,6 +21,8 @@ class Favorites
           p['addr:city'],
         ].compact.join(' ')
 
+        p['website'] = p['website']&.collect{ |url| CGI.escapeHTML(url) }
+
         feature
       }
     end
