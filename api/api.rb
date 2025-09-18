@@ -24,6 +24,9 @@ configure do
   })
 end
 
+get '/up' do
+  204
+end
 
 get '/v0.1/:project/:theme/pois/favorites.pdf' do
   project = params['project']
