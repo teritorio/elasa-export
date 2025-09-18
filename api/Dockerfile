@@ -8,7 +8,7 @@ ADD Gemfile Gemfile.lock ./
 RUN bundle config --global silence_root_warning 1
 RUN bundle install
 
-ADD *.ru *.rb  ./
+COPY config.ru *.rb  ./
 
 VOLUME /data/config.yaml
 CMD bundle exec thin -p 4567 start

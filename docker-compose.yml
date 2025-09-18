@@ -18,7 +18,7 @@ services:
       # - RACK_ENV=production
     volumes:
       - ./config.yaml:/data/config.yaml
-      - ./api:/srv/app
+      # - ./api:/srv/app
     depends_on:
       - carbone
     ports:
