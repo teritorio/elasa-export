@@ -4,9 +4,8 @@ require 'cgi'
 require 'httparty'
 
 class Favorites
-  def self.get_pdf(config, project, theme, ids, lang, cache, carbone_url)
-    config_fav = config['templates']['favorites']
-    api_url = config['api_url']
+  def self.get_pdf(config, api_url, project, theme, settings, ids, lang, qrcode_callback_url, cache, carbone_url, qr_shortener_url)
+    config_fav = config['templates']
     favorites = api_favorites(cache, "#{api_url}/#{project}/#{theme}/pois.geojson?ids=#{ids}&as_point=true&short_description=true")
 
     favorites = if favorites
@@ -27,8 +26,7 @@ class Favorites
       }
     end
 
-    qr_shortener_url = config['services']['qr_shortener_url']
-    url_to_encode = CGI.escape(config_fav['qrcode_callback_url'] + ids)
+    url_to_encode = CGI.escape(qrcode_callback_url + ids)
     shortener_url = "#{qr_shortener_url}/shorten?url=#{url_to_encode}"
     favorites_qrcode_url = "#{qr_shortener_url}/qrcode.svg?url=#{url_to_encode}"
 
@@ -38,7 +36,7 @@ class Favorites
     }
 
     data = {
-      'settings' => api_settings(cache, "#{config['api_url']}/#{project}/#{theme}/settings.json"),
+      'settings' => settings,
       'favorites' => favorites,
       'globals' => globals,
     }

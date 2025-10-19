@@ -16,9 +16,15 @@ services:
     environment:
       - CONFIG=/data/config.yaml
       # - RACK_ENV=production
+      - CARBONE_URL=http://carbone:3030
+      - CACHE=cache
+      - API_URL=${API_URL:-}
+      - QR_SHORTENER_URL=${QR_SHORTENER_URL:-}
+      - LANGS=${LANGS:-}
     volumes:
       - ./config.yaml:/data/config.yaml
-      # - ./api:/srv/app
+      # - ./api/api.rb:/srv/app/api.rb
+      # - ./api/favorites.rb:/srv/app/favorites.rb
     depends_on:
       - carbone
     ports:

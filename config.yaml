@@ -1,33 +1,7 @@
-services:
-  __default__:
-    services:
-      qr_shortener_url: http://qr_shortener:8635
-    templates:
-      favorites:
-        path: favorites-default.odt
-        images:
-          - zipPath: 'Pictures/1001AF2C00001B58000013884478CBA59A4FBD23.svg'
-            property: [settings, themes, 0, logo_url]
-          - zipPath: 'Pictures/10001E83000014C6000014C6A9CA85DB240426D5.svg'
-            property: [globals, favorites_qrcode_url]
-
-  dev:
-    tourism:
-      api_url: https://dev.appcarto.teritorio.xyz/content/api.teritorio/geodata/v0.1
-      templates:
-        favorites:
-          qrcode_callback_url: https://dev.appcarto.teritorio.xyz/?a=a#fav=
-
-  test:
-    tourism:
-      api_url: https://dev.appcarto.teritorio.xyz/content/api.teritorio/geodata/v0.1
-      templates:
-        favorites:
-          path: favorites-test.odt
-          qrcode_callback_url: https://vido.teritorio.xyz/#mode=favorites&favs=
-
-
-config:
-  langs: [en, fr, es]
-  carbone_url: http://carbone:3030
-  cache: cache
+templates:
+  path: favorites-default.odt
+  images:
+    - zipPath: 'Pictures/1001AF2C00001B58000013884478CBA59A4FBD23.svg'
+      property: [settings, themes, 0, logo_url]
+    - zipPath: 'Pictures/10001E83000014C6000014C6A9CA85DB240426D5.svg'
+      property: [globals, favorites_qrcode_url]
