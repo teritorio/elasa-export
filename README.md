@@ -10,7 +10,7 @@ Render PDF from template using Elasa API data.
 ### Extra computed fields
 
 - `phones` from `phone` array
-- `adress` from `addr:*` fields
+- `address` from `addr:*` fields
 
 # Templates
 

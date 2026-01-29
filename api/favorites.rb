@@ -4,23 +4,28 @@ require 'cgi'
 require 'httparty'
 
 class Favorites
-  def self.get_pdf(config, api_url, project, theme, settings, ids, lang, qrcode_callback_url, cache, carbone_url, qr_shortener_url)
+  def self.get_pdf(config, api_url, project, theme, settings, menu, ids, lang, qrcode_callback_url, cache, carbone_url, qr_shortener_url)
     config_fav = config['templates']
     favorites = api_favorites(cache, "#{api_url}/#{project}/#{theme}/pois.geojson?ids=#{ids}&as_point=true&short_description=true")
 
     favorites = if favorites
+      menu_map = menu.select{ |menu_item| !menu_item['category'].nil? }.to_h{ |menu_item| [menu_item['id'], menu_item] }
       favorites['features'].collect{ |feature|
         p = feature['properties']
 
+        p['name'] = p['name']['fr-FR'] || p['name']['fr'] || p['name']['en-US'] || p['name']['en'] || p['name'].first[1]
         p['phones'] = p['phone'].join(', ') if p['phone']
         p['address'] = [
-          p['addr:housenumber'],
-          p['addr:street'],
-          p['addr:postcode'],
-          p['addr:city'],
+          p.dig('addr', 'housenumber'),
+          p.dig('addr', 'street'),
+          p.dig('addr', 'postcode'),
+          p.dig('addr', 'city'),
         ].compact.join(' ')
 
         p['website'] = p['website']&.collect{ |url| CGI.escapeHTML(url) }
+
+        category = menu_map[p['metadata']['category_ids'].first]
+        p['editorial'] = category['category']['editorial']
 
         feature
       }

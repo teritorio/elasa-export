@@ -38,16 +38,17 @@ get '/v0.1/:project/:theme/pois/favorites.pdf' do
   lang = request.env['HTTP_ACCEPT_LANGUAGE'] || 'en'
   lang = AcceptLanguage.parse(lang).match(*settings.config['langs']) || 'en'
 
-  projects = JSON.parse(settings.download_api_cache.get(api_url).content)
-  project = projects[project_slug]
+  project = JSON.parse(settings.download_api_cache.get("#{api_url}/#{project_slug}/#{theme_slug}/settings.json").content)
   halt 404 if project.nil? || project['themes'][theme_slug].nil?
   project['themes'] = [project['themes'][theme_slug]]
   site_url = project['themes'][0]['site_url']
   halt 404 if site_url.nil?
 
+  menu = JSON.parse(settings.download_api_cache.get("#{api_url}/#{project_slug}/#{theme_slug}/menu.json").content)
+
   site_utl_lang = site_url[lang] || site_url['en'] || site_url.values.first
   qrcode_callback_url = "#{site_utl_lang}/?origin=link_share#mode=favorites&favs="
 
   content_type :pdf
-  Favorites.get_pdf(config, api_url, project_slug, theme_slug, project, ids, lang, qrcode_callback_url, settings.download_poi_cache, settings.config['carbone_url'], settings.config['qr_shortener_url'])
+  Favorites.get_pdf(config, api_url, project_slug, theme_slug, project, menu, ids, lang, qrcode_callback_url, settings.download_poi_cache, settings.config['carbone_url'], settings.config['qr_shortener_url'])
 end
