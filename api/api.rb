@@ -10,6 +10,7 @@ require './favorites'
 api_url = ENV['API_URL'] || raise('API_URL env variable is required')
 
 configure do
+  set :host_authorization, { permitted_hosts: [] }
   set(:config, ['CARBONE_URL', 'CACHE', 'API_URL', 'QR_SHORTENER_URL', 'LANGS'].to_h{ |key|
     [
       key.downcase,
