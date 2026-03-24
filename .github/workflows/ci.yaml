@@ -16,7 +16,16 @@ jobs:
       id-token: write
 
     steps:
-      - name: Docker Build and Push
+      - name: Docker Build and Push API
         uses: cartoway/docker-compose-build-push-action@main
         with:
           registry_password: ${{ secrets.GITHUB_TOKEN }}
+          project: teritorio/elasa-export-api
+          service: api
+
+      - name: Docker Build and Push Carbone
+        uses: cartoway/docker-compose-build-push-action@main
+        with:
+          registry_password: ${{ secrets.GITHUB_TOKEN }}
+          project: teritorio/elasa-export-carbone
+          service: carbone
