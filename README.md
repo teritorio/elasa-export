@@ -23,6 +23,7 @@ On custom font usage, embedind is required. See [LibreOffice Help](https://help.
 ## Docker
 
 ```
+cp config.template.yaml b/config.yaml
 docker compose build
 docker compose up -d
 ```

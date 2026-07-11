@@ -5,7 +5,7 @@ require 'httparty'
 
 class Favorites
   def self.get_pdf(config, api_url, project, theme, settings, menu, ids, lang, qrcode_callback_url, cache, carbone_url, qr_shortener_url)
-    config_fav = config['templates']
+    config_fav = config.dig(project, theme) || config['templates']
     favorites = api_favorites(cache, "#{api_url}/#{project}/#{theme}/pois.geojson?ids=#{ids}&as_point=true&short_description=true")
 
     favorites = if favorites
