@@ -1,4 +1,6 @@
 # typed: true
+# frozen_string_literal: true
+
 require 'sinatra'
 require 'yaml'
 require 'deep_merge'
@@ -11,7 +13,7 @@ api_url = ENV['API_URL'] || raise('API_URL env variable is required')
 
 configure do
   set :host_authorization, { permitted_hosts: [] }
-  set(:config, ['CARBONE_URL', 'CACHE', 'API_URL', 'QR_SHORTENER_URL', 'LANGS'].to_h{ |key|
+  set(:config, %w[CARBONE_URL CACHE API_URL QR_SHORTENER_URL LANGS].to_h{ |key|
     [
       key.downcase,
       ENV[key] || raise("#{key} env variable is required")
@@ -22,7 +24,7 @@ configure do
   set(:download_api_cache, WebCache.new(life: '3m', dir: settings.config['cache']))
   set(:download_poi_cache, WebCache.new(life: '6h', dir: settings.config['cache']))
 
-  config = YAML.load_file(ENV['CONFIG'])
+  config = YAML.load_file(ENV.fetch('CONFIG', nil))
   set(:config, config || {})
 end
 
@@ -37,7 +39,7 @@ get '/v0.1/:project/:theme/pois/favorites.pdf' do
   ids = params['ids']
 
   lang = request.env['HTTP_ACCEPT_LANGUAGE'] || 'en'
-  lang = AcceptLanguage.parse(lang).match(*settings.config['langs']) || 'en'
+  lang = (AcceptLanguage.parse(lang).match(*settings.config['langs'].map(&:to_sym)) || 'en').to_s
 
   project = JSON.parse(settings.download_api_cache.get("#{api_url}/#{project_slug}/#{theme_slug}/settings.json").content)
   halt 404 if project.nil? || project['themes'][theme_slug].nil?
